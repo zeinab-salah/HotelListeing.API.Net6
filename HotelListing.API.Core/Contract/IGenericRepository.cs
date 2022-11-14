@@ -1,7 +1,8 @@
-﻿using HotelListeing.API.Models;
-using Microsoft.AspNetCore.OData;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using HotelListing.API.Data;
+using HotelListing.API.Core.Models;
 
-namespace HotelListeing.API.Contract
+namespace HotelListing.API.Core.Contarct
 {
     public interface IGenericRepository<T> where T : class
     {

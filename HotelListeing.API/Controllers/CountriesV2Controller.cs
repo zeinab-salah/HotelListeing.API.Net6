@@ -5,29 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HotelListeing.API.Data;
-using HotelListeing.API.Models.Country;
 using AutoMapper;
-using HotelListeing.API.Contract;
-using HotelListeing.API.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.OData;
-using HotelListeing.API.Exceptions;
+using Microsoft.AspNetCore.OData.Query;
+using HotelListeing.API.Data;
 using HotelListeing.API.Models;
+using HotelListeing.API.Models.Country;
+using Microsoft.AspNetCore.OData;
+using HotelListeing.API.Contract;
+using HotelListeing.API.Exceptions;
 
 namespace HotelListeing.API.Controllers
 {
     [Route("api/v{version:apiVersion}/countries")]
     [ApiController]
-    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("2.0")]
 
-    public class CountriesController : ControllerBase
+    public class CountriesV2Controller : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly ICountriesRepository _countriesRepository;
         private readonly ILogger<CountriesController> _logger;
 
-        public CountriesController(IMapper mapper, ICountriesRepository countriesRepository,
+        public CountriesV2Controller(IMapper mapper, ICountriesRepository countriesRepository,
             ILogger<CountriesController> logger)
         {
 
@@ -36,23 +36,15 @@ namespace HotelListeing.API.Controllers
             this._logger = logger;
         }
 
-        // GET: api/Countries/GetAll
-        [HttpGet("GetAll")]
+        // GET: api/Countries
+        [HttpGet]
+        [EnableQuery]
         public async Task<ActionResult<IEnumerable<GetCountryDto>>> GetCountries()
         {
             // return await _context.Countries.ToListAsync();
             var coutries = await _countriesRepository.GetAllAsync();
             var records = _mapper.Map<List<GetCountryDto>>(coutries);
             return Ok(records);
-        }
-
-        // GET : api/Countries/?StartIndex=0&pageSize=25&PageNumber=1
-        [HttpGet]
-        public async Task<ActionResult<PageResult<GetCountryDto>>> GetPagedCountries([FromQuery] QueryParameters queryParameters)
-        {
-            // return await _context.Countries.ToListAsync();
-            var PagedCoutriesResult = await _countriesRepository.GetAllAsync<GetCountryDto>(queryParameters);
-            return Ok(PagedCoutriesResult);
         }
 
         // GET: api/Countries/5

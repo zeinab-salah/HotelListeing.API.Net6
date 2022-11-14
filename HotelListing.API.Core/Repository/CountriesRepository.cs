@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using HotelListeing.API.Contract;
-using HotelListeing.API.Data;
+using HotelListing.API.Core.Contarct;
+using HotelListing.API.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelListeing.API.Repository
+namespace HotelListing.API.Core.Repository
 {
     public class CountriesRepository : GenericRepository<Country>, ICountriesRepository
     {
         private readonly HotelListeingDbContext _context;
         private readonly IMapper _mapper;
 
-        public CountriesRepository(HotelListeingDbContext context, IMapper mapper) : base(context, mapper)
+        public CountriesRepository(HotelListeingDbContext context,IMapper mapper) : base(context, mapper)
         {
             this._context = context;
             this._mapper = mapper;
@@ -21,7 +21,5 @@ namespace HotelListeing.API.Repository
             return await _context.Countries.Include(q => q.Hotels)
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
-
-       
     }
 }

@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using HotelListeing.API.Contract;
-using HotelListeing.API.Data;
-using HotelListeing.API.Models;
+using HotelListing.API.Core.Contarct;
+using HotelListing.API.Core.Models;
+using HotelListing.API.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelListeing.API.Repository
+namespace HotelListing.API.Core.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly HotelListeingDbContext _context;
         private readonly IMapper _mapper;
 
-        public GenericRepository(HotelListeingDbContext context, IMapper mapper)
+        public GenericRepository(HotelListeingDbContext context,IMapper mapper)
         {
             this._context = context;
             this._mapper = mapper;
@@ -26,16 +26,16 @@ namespace HotelListeing.API.Repository
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await GetAsync(id);
+            var entity=await GetAsync(id);
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
-
+           
         }
 
         public async Task<bool> Exists(int id)
         {
-            var entity = await GetAsync(id);
-            return entity != null;
+            var entity=await GetAsync(id);
+            return entity!=null;
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -64,7 +64,7 @@ namespace HotelListeing.API.Repository
 
         public async Task<T> GetAsync(int? id)
         {
-            if (id is null)
+            if(id is null)
             {
                 return null;
             }
@@ -75,9 +75,7 @@ namespace HotelListeing.API.Repository
         public async Task UpdateAsync(T entity)
         {
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  
         }
-
-       
     }
 }

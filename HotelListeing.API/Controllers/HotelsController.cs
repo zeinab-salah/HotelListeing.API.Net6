@@ -10,6 +10,8 @@ using HotelListeing.API.Contract;
 using AutoMapper;
 using HotelListeing.API.Models.Hotel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OData;
+using HotelListeing.API.Models;
 
 namespace HotelListeing.API.Controllers
 {
@@ -23,16 +25,25 @@ namespace HotelListeing.API.Controllers
 
         public HotelsController(IHotelRepository hotelRepository, IMapper mapper)
         {
-           this._hotelRepository = hotelRepository;
+            this._hotelRepository = hotelRepository;
             this._mapper = mapper;
         }
 
         // GET: api/Hotels
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<HotelDto>>> GetHotels()
         {
-            var hotel=await _hotelRepository.GetAllAsync();
+            var hotel = await _hotelRepository.GetAllAsync();
             return Ok(_mapper.Map<List<HotelDto>>(hotel));
+        }
+
+        // GET : api/Hotels/?StartIndex=0&pageSize=25&PageNumber=1
+        [HttpGet]
+        public async Task<ActionResult<PageResult<HotelDto>>> GetPagedCountries([FromQuery] QueryParameters queryParameters)
+        {
+            // return await _context.Countries.ToListAsync();
+            var PagedCoutriesResult = await _hotelRepository.GetAllAsync<HotelDto>(queryParameters);
+            return Ok(PagedCoutriesResult);
         }
 
         // GET: api/Hotels/5
@@ -73,7 +84,7 @@ namespace HotelListeing.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (! await HotelExists(id))
+                if (!await HotelExists(id))
                 {
                     return NotFound();
                 }
@@ -91,7 +102,7 @@ namespace HotelListeing.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Hotel>> PostHotel(CreateHotelDto createHotelDto)
         {
-            var hotel=_mapper.Map<Hotel>(createHotelDto);
+            var hotel = _mapper.Map<Hotel>(createHotelDto);
             await _hotelRepository.AddAsync(hotel);
 
             return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
@@ -107,7 +118,7 @@ namespace HotelListeing.API.Controllers
                 return NotFound();
             }
 
-            
+
             await _hotelRepository.DeleteAsync(id);
 
             return NoContent();

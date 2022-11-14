@@ -1,7 +1,8 @@
-﻿using HotelListeing.API.Models.Users;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using HotelListing.API.Data;
+using HotelListing.API.Core.Models.Users;
 
-namespace HotelListeing.API.Contract
+namespace HotelListing.API.Core.Contarct
 {
     public interface IAuthManger
     {
@@ -9,6 +10,6 @@ namespace HotelListeing.API.Contract
         Task<AuthResponseDto> Login(LoginDto loginDto);
         Task<string> CreateRefreshToken();
         Task<AuthResponseDto> VerfiyRefreshToken(AuthResponseDto requset);
-
+       
     }
 }

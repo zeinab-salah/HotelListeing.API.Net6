@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using HotelListeing.API.Contract;
-using HotelListeing.API.Data;
+using HotelListing.API.Core.Contarct;
+using HotelListing.API.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelListeing.API.Repository
+namespace HotelListing.API.Core.Repository
 {
     public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
     {
