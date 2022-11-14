@@ -34,12 +34,12 @@ namespace HotelListeing.API.Controllers
         public async Task<ActionResult<IEnumerable<HotelDto>>> GetHotels()
         {
             var hotel = await _hotelRepository.GetAllAsync();
-            return Ok(_mapper.Map<List<HotelDto>>(hotel));
+            return Ok(hotel);
         }
 
         // GET : api/Hotels/?StartIndex=0&pageSize=25&PageNumber=1
         [HttpGet]
-        public async Task<ActionResult<PageResult<HotelDto>>> GetPagedCountries([FromQuery] QueryParameters queryParameters)
+        public async Task<ActionResult<PageResult<HotelDto>>> GetPagedHotels([FromQuery] QueryParameters queryParameters)
         {
             // return await _context.Countries.ToListAsync();
             var PagedCoutriesResult = await _hotelRepository.GetAllAsync<HotelDto>(queryParameters);
@@ -59,6 +59,7 @@ namespace HotelListeing.API.Controllers
 
             return Ok(_mapper.Map<HotelDto>(hotel));
         }
+
 
         // PUT: api/Hotels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

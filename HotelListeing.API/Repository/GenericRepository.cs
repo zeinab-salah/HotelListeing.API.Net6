@@ -42,6 +42,12 @@ namespace HotelListeing.API.Repository
         {
             return await _context.Set<T>().ToListAsync();
         }
+        public async Task<List<TResult>> GetAllAsync<TResult>()
+        {
+            return await _context.Set<T>()
+                .ProjectTo<TResult>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
 
         public async Task<PageResult<TResult>> GetAllAsync<TResult>(QueryParameters queryParameters)
         {
