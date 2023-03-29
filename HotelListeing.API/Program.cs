@@ -141,7 +141,7 @@ if (app.Environment.IsDevelopment())
 {
  //   app.UseSwagger();
    // app.UseSwaggerUI();
-
+   //adding command
 }
 // we move them out when i want to publish project
 app.UseSwagger();
